@@ -1,4 +1,15 @@
-app\config\Initializer.class
+app\dao\AdDAO.class
+app\common\GenericDAOImpl.class
 app\config\HibernateConfig.class
 app\controller\HomeController.class
+app\model\enums\AdStatus.class
+app\model\Ad.class
+app\service\AdService.class
+app\config\Initializer.class
+app\common\GenericDAO.class
+app\common\util\SiteProperties.class
+app\dao\daoImpl\AdDAOImpl.class
 app\config\WebAppConfig.class
+app\service\serviceImpl\AdServiceImpl.class
+app\controller\ad\CreateAdController.class
+app\common\EntityFactory.class

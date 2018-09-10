@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 public final class SiteProperties {
     private static final String TRUE = "TRUE";
-    private static final String DEFAULT_CONFIG = "app.properties";
+    private static final String DEFAULT_CONFIG = "local/app.properties";
     private static final Log LOGGER = LogFactory.getLog(SiteProperties.class);
     private static final Map<String, SiteProperties> INSTANCES = new HashMap<>();
     private final Properties config = new Properties();

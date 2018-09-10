@@ -19,7 +19,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("app")
-@PropertySource("classpath:app.properties")
+@PropertySource("classpath:local/app.properties")
 public class HibernateConfig {
 
     @Value("${spring.datasource.username}")

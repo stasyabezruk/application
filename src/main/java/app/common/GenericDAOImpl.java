@@ -3,6 +3,7 @@ package app.common;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.Serializable;
@@ -10,14 +11,14 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.util.List;
 
-public abstract class GenericDAOSpring<T, ID extends Serializable> implements GenericDAO<T, ID> {
+public abstract class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T, ID> {
     private EntityManager em;
     protected Class<T> entityBeanType;
 
     protected final String QUERY_LIST_ALL;
     private final String QUERY_COUNT_ALL;
 
-    public GenericDAOSpring() {
+    public GenericDAOImpl() {
         ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
 
         try {
@@ -123,6 +124,16 @@ public abstract class GenericDAOSpring<T, ID extends Serializable> implements Ge
 
     protected Query createQuery(String namedQuery, Object... parameters) {
         return createLimitedCacheableQuery(namedQuery, null, null, true, parameters);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected T findByQuery(String namedQuery, Object... parameters) {
+        try {
+            Query query = createLimitedQuery(namedQuery, null, 1, parameters);
+            return (T) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     protected Query createLimitedQuery(String namedQuery, Integer firstResult, Integer maxResults, Object... parameters) {
