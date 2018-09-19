@@ -12,11 +12,13 @@ import java.lang.reflect.TypeVariable;
 import java.util.List;
 
 public abstract class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T, ID> {
-    private EntityManager em;
-    protected Class<T> entityBeanType;
 
-    protected final String QUERY_LIST_ALL;
-    private final String QUERY_COUNT_ALL;
+    @PersistenceContext
+    private EntityManager em;
+
+    private Class<T> entityClass;
+
+    private final String QUERY_LIST_ALL;
 
     public GenericDAOImpl() {
         ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
@@ -24,58 +26,37 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         try {
             Object typeVariable = parameterizedType.getActualTypeArguments()[0];
             if (typeVariable instanceof Class)
-                this.entityBeanType = (Class<T>) typeVariable;
+                this.entityClass = (Class<T>) typeVariable;
             else {
                 @SuppressWarnings("rawtypes")
                 TypeVariable<?> t = (TypeVariable) typeVariable;
-                this.entityBeanType = (Class<T>) t.getBounds()[0];
+                this.entityClass = (Class<T>) t.getBounds()[0];
             }
-
-            if (this.entityBeanType.isInterface())
-                this.entityBeanType = EntityFactory.getImplementation(entityBeanType);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        QUERY_LIST_ALL = "FROM " + this.entityBeanType.getName();
-        QUERY_COUNT_ALL = "SELECT COUNT(*) FROM " + this.entityBeanType.getName();
+        QUERY_LIST_ALL = "FROM " + this.entityClass.getName();
     }
 
-    @PersistenceContext
-    public void setEntityManager(EntityManager em) {
-        this.em = em;
-    }
-
-    protected EntityManager getEntityManager() {
-        if (em == null)
-            throw new IllegalStateException("EntityManager has not been set on DAO before usage");
-
-        return em;
-    }
-
-    protected Class<T> getEntityBeanType() {
-        return entityBeanType;
+    protected Class<T> getEntityClass() {
+        return entityClass;
     }
 
     @Override
     public T findById(ID id) {
-        return getEntityManager().find(getEntityBeanType(), id);
-    }
-
-    @Override
-    public List<Long> listIDs() {
-        return null;
+        return em.find(getEntityClass(), id);
     }
 
     @Override
     public List<T> list() {
-        Query query = getEntityManager().createQuery(QUERY_LIST_ALL);
+        Query query = em.createQuery(QUERY_LIST_ALL);
         return listByQuery(query);
     }
 
     @Override
     public List<T> list(final int first, final int maxResults) {
-        Query query = getEntityManager().createQuery(QUERY_LIST_ALL);
+        Query query = em.createQuery(QUERY_LIST_ALL);
         return listByQuery(query.setFirstResult(first).setMaxResults(maxResults));
     }
 
@@ -83,27 +64,27 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
     @Transactional
     @SuppressWarnings("hiding")
     public <T> T save(T entity) {
-        return getEntityManager().merge(entity);
+        return em.merge(entity);
     }
 
     @Override
     @Transactional
     public void delete(T entity) {
-        getEntityManager().remove(getEntityManager().contains(entity) ? entity : getEntityManager().merge(entity));
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
     @Override
     public void refresh(T entity) {
-        getEntityManager().refresh(entity);
+        em.refresh(entity);
     }
 
     protected List listByNativeQuery(String queryString) {
-        Query query = getEntityManager().createNativeQuery(queryString);
+        Query query = em.createNativeQuery(queryString);
         return query.getResultList();
     }
 
     protected List<?> listByNativeQuery(String queryString, Object... parameters) {
-        Query query = getEntityManager().createNativeQuery(queryString);
+        Query query = em.createNativeQuery(queryString);
         prepareQuery(query, null, null, false, parameters);
         return query.getResultList();
     }
@@ -136,16 +117,16 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         }
     }
 
-    protected Query createLimitedQuery(String namedQuery, Integer firstResult, Integer maxResults, Object... parameters) {
+    private Query createLimitedQuery(String namedQuery, Integer firstResult, Integer maxResults, Object... parameters) {
         return createLimitedCacheableQuery(namedQuery, firstResult, maxResults, true, parameters);
     }
 
-    protected Query createLimitedCacheableQuery(String namedQuery, Integer firstResult, Integer maxResults, boolean cacheable, Object... parameters) {
-        Query query = getEntityManager().createNamedQuery(namedQuery);
+    private Query createLimitedCacheableQuery(String namedQuery, Integer firstResult, Integer maxResults, boolean cacheable, Object... parameters) {
+        Query query = em.createNamedQuery(namedQuery);
         return prepareQuery(query, firstResult, maxResults, cacheable, parameters);
     }
 
-    public Query prepareQuery(Query query, Integer firstResult, Integer maxResults, boolean cacheable, Object... parameters) {
+    private Query prepareQuery(Query query, Integer firstResult, Integer maxResults, boolean cacheable, Object... parameters) {
         if (firstResult != null && firstResult >= 0)
             query.setFirstResult(firstResult);
 

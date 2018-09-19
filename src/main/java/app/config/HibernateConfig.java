@@ -8,18 +8,18 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("app")
-@PropertySource("classpath:local/app.properties")
+@ComponentScan("app.model")
+@PropertySource( "classpath:app.properties" )
 public class HibernateConfig {
 
     @Value("${spring.datasource.username}")
@@ -36,6 +36,8 @@ public class HibernateConfig {
     private String scanPackage;
     @Value("${hibernate.hbm2ddl.auto}")
     private String ddlAuto;
+    @Value("${hibernate.show_sql}")
+    private String showSql;
 
     @Bean
     public DataSource dataSource() {
@@ -48,7 +50,7 @@ public class HibernateConfig {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() throws URISyntaxException {
+    public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource());
         sessionFactoryBean.setPackagesToScan(scanPackage);
@@ -56,20 +58,19 @@ public class HibernateConfig {
         return sessionFactoryBean;
     }
 
+    @Bean
+    @Autowired
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        return new HibernateTransactionManager(sessionFactory);
+    }
+
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", dialect);
         properties.put("hibernate.hbm2ddl.auto", ddlAuto);
+        properties.put("hibernate.show_sql", showSql);
 
         return properties;
-    }
-
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory);
-        return transactionManager;
     }
 
 }

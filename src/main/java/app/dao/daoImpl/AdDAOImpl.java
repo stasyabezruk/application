@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-//@Repository("adDao")
+@Repository("adDao")
 public class AdDAOImpl extends GenericDAOImpl<Ad, Long> implements AdDAO {
 
     @Override
@@ -21,7 +21,7 @@ public class AdDAOImpl extends GenericDAOImpl<Ad, Long> implements AdDAO {
 
     @Override
     public Ad findById(Long id) {
-        return findByQuery("Ad.findByid", "id", id);
+        return findByQuery("Ad.findById", "id", id);
     }
 
     @Override
