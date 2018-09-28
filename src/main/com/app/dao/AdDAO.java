@@ -1,6 +1,6 @@
 package com.app.dao;
 
-import com.app.common.GenericDAO;
+import com.app.common.jpa.GenericDAO;
 import com.app.model.Ad;
 import com.app.model.enums.AdStatus;
 

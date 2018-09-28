@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite
+        PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite3.2.dtd">
+<urlrewrite>
+    <rule>
+        <from>^/$</from>
+        <to>/frontpage.do</to>
+    </rule>
+
+    <outbound-rule>
+        <from>^/frontpage.do$</from>
+        <to>/</to>
+    </outbound-rule>
+</urlrewrite>

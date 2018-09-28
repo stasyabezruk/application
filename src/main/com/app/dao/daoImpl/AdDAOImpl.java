@@ -1,6 +1,7 @@
 package com.app.dao.daoImpl;
 
-/*@Repository("adDao")
+/*
+@Repository("adDao")
 public class AdDAOImpl extends GenericDAOImpl<Ad, Long> implements AdDAO {
 
     @Override
@@ -20,4 +21,5 @@ public class AdDAOImpl extends GenericDAOImpl<Ad, Long> implements AdDAO {
         return listByQuery("Ad.listByAdStatus", "adStatus", adStatus);
     }
 
-}*/
+}
+*/

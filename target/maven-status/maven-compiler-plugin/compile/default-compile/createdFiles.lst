@@ -1,9 +1,15 @@
 com\app\service\AdService.class
+com\app\common\jpa\GenericDAOImpl.class
 com\app\controller\HomeController.class
-com\app\common\GenericDAO.class
+com\app\common\jpa\EntityFactory.class
+com\app\configuration\JMXConfiguration.class
 com\app\model\enums\AdStatus.class
+com\app\common\util\SiteProperties.class
+com\app\configuration\component\Log4jConfiguratorMXBean.class
 com\app\controller\ad\CreateAdController.class
+com\app\configuration\BPSQLDialect.class
 com\app\model\Ad.class
 com\app\service\serviceImpl\AdServiceImpl.class
-com\app\common\GenericDAOImpl.class
+com\app\common\jpa\GenericDAO.class
 com\app\dao\AdDAO.class
+com\app\configuration\component\impl\Log4jConfiguratorMXBeanImpl.class

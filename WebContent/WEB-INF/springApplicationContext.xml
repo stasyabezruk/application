@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                       http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+		                   http://www.springframework.org/schema/task
+		                   http://www.springframework.org/schema/task/spring-task.xsd
+		                   http://www.springframework.org/schema/tx
+		                   http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <context:annotation-config />
+    <context:component-scan base-package="com.app">
+        <context:exclude-filter type="regex" expression=".*\.controller\..*" />
+    </context:component-scan>
+
+    <bean id="jmxConfiguration" class="com.app.configuration.JMXConfiguration" />
+
+    <!-- ##### TRANSACTIONS ### -->
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+
+    <!-- ##### PERSISTENCE UNITS ### -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="global" />
+
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database" value="MYSQL" />
+            </bean>
+        </property>
+
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="hibernate.dialect" value="com.app.configuration.BPSQLDialect" />
+                <entry key="hibernate.hbm2ddl.auto" value="create-drop" />
+                <entry key="hibernate.format_sql" value="true" />
+
+                <entry key="hibernate.current_session_context_class" value="org.springframework.orm.hibernate4.SpringSessionContext" />
+
+                <entry key="hibernate.connection.provider_class" value="com.zaxxer.hikari.hibernate.HikariConnectionProvider" />
+                <entry key="hibernate.connection.CharSet" value="utf8mb4" />
+                <entry key="hibernate.connection.characterEncoding" value="utf8mb4" />
+                <entry key="hibernate.connection.useUnicode" value="true" />
+                <entry key="hibernate.connection.release_mode" value="after_transaction" />
+
+                <entry key="hibernate.hikari.dataSource.url" value="jdbc:mysql://localhost:3306/application" />
+                <entry key="hibernate.hikari.dataSource.user" value="root" />
+                <entry key="hibernate.hikari.dataSource.password" value="123456" />
+
+
+                <entry key="hibernate.hikari.dataSource.cachePrepStmts" value="true"/>
+                <entry key="hibernate.hikari.dataSource.prepStmtCacheSize" value="250"/>
+                <entry key="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048"/>
+
+                <entry key="hibernate.hikari.minimumIdle" value="5" />
+                <entry key="hibernate.hikari.registerMbeans" value="true" />
+                <entry key="hibernate.hikari.poolName" value="application_pool" />
+                <entry key="hibernate.hikari.maximumPoolSize" value="100" />
+                <entry key="hibernate.hikari.idleTimeout" value="30000" />
+                <entry key="hibernate.hikari.connectionTimeout" value="34000" />
+                <entry key="hibernate.hikari.connectionInitSql" value="SET NAMES utf8mb4" />
+                <entry key="hibernate.hikari.driverClassName" value="com.mysql.jdbc.Driver" />
+                <entry key="hibernate.hikari.jdbcUrl" value="jdbc:mysql://localhost:3306/application" />
+
+                <!-- ### HIBERNATE CACHE ### -->
+                <entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory"/>
+                <entry key="hibernate.cache.use_query_cache" value="true"/>
+                <entry key="hibernate.cache.use_second_level_cache" value="true"/>
+                <entry key="hibernate.cache.region_prefix" value=""/>
+
+                <!-- ### HIBERNATE DEBUG ### -->
+                <entry key="hibernate.format_sql" value="false" />
+                <entry key="hibernate.use_sql_comments" value="false" />
+                <entry key="hibernate.show_sql" value="true" />
+                <entry key="hibernate.generate_statistics" value="true" />
+            </map>
+        </property>
+    </bean>
+
+
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor">
+        <property name="defaultPersistenceUnitName" value="entityManagerFactory" />
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <bean id="sharedTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
+</beans>
