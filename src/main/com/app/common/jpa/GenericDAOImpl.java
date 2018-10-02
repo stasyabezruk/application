@@ -38,7 +38,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         QUERY_LIST_ALL = "FROM " + this.entityClass.getName();
     }
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "global")
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }
@@ -107,15 +107,6 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
     protected List<T> listByQuery(String namedQuery, Object... parameters) {
         Query query = createLimitedQuery(namedQuery, null, null, parameters);
         return listByQuery(query);
-    }
-
-    protected List<T> listByLimitedQuery(String namedQuery, Integer maxResults, Object... parameters) {
-        Query query = createLimitedQuery(namedQuery, null, maxResults, parameters);
-        return listByQuery(query);
-    }
-
-    protected Query createQuery(String namedQuery, Object... parameters) {
-        return createLimitedCacheableQuery(namedQuery, null, null, true, parameters);
     }
 
     @SuppressWarnings("unchecked")

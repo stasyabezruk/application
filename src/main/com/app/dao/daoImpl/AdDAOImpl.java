@@ -1,8 +1,17 @@
 package com.app.dao.daoImpl;
 
-/*
+import com.app.common.jpa.GenericDAOImpl;
+import com.app.dao.AdDAO;
+import com.app.model.Ad;
+import com.app.model.enums.AdStatus;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.util.List;
+
 @Repository("adDao")
-public class AdDAOImpl extends GenericDAOImpl<Ad, Long> implements AdDAO {
+public class AdDAOImpl extends GenericDAOImpl<Ad, Long> implements AdDAO, Serializable {
 
     @Override
     @Transactional
@@ -22,4 +31,3 @@ public class AdDAOImpl extends GenericDAOImpl<Ad, Long> implements AdDAO {
     }
 
 }
-*/

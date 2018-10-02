@@ -60,7 +60,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/springViewContext.xml</param-value>
+            <param-value>resources/global/springViewContext.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -77,7 +77,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/springApplicationContext.xml</param-value>
+        <param-value>resources/global/springApplicationContext.xml</param-value>
     </context-param>
 
 </web-app>

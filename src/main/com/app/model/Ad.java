@@ -7,10 +7,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ad")
-/*@NamedQueries({
-        @NamedQuery(name="Ad.findById", query = "select * from ad where id=:id"),
-        @NamedQuery(name = "Ad.listByAdStatus", query = "select * from ad where adStatus=:adStatus")
-})*/
+@NamedQueries({
+        @NamedQuery(name="Ad.findById", query = "select a from Ad a where a.id=:id"),
+        @NamedQuery(name = "Ad.listByAdStatus", query = "select a from Ad a where a.adStatus=:adStatus")
+})
 
 public class Ad {
     @Id
