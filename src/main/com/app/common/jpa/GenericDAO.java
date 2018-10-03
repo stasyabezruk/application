@@ -8,5 +8,4 @@ public interface GenericDAO<T, ID extends Serializable> {
     List<T> list(final int start, final int maxResults);
     <T> T save(T entity);
     void delete(T entity);
-    void refresh (T entity);
 }

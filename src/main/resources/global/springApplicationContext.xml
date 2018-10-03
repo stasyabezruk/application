@@ -52,7 +52,7 @@
                 <entry key="hibernate.connection.useUnicode" value="true" />
                 <entry key="hibernate.connection.release_mode" value="after_transaction" />
 
-                <entry key="hibernate.hikari.dataSource.url" value="jdbc:mysql://localhost:3306/application" />
+                <entry key="hibernate.hikari.dataSource.url" value="jdbc:mysql://${db.host}/${db.database}" />
                 <entry key="hibernate.hikari.dataSource.user" value="${db.username}" />
                 <entry key="hibernate.hikari.dataSource.password" value="${db.password}" />
 

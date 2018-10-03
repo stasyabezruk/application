@@ -81,13 +81,9 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
     @Override
     @Transactional
     public void delete(T entity) {
-        em.remove(em.contains(entity) ? entity : em.merge(entity));
+        em.remove(entity);
     }
 
-    @Override
-    public void refresh(T entity) {
-        em.refresh(entity);
-    }
 
     protected List listByNativeQuery(String queryString) {
         Query query = em.createNativeQuery(queryString);

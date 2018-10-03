@@ -8,8 +8,9 @@
         <to>/frontpage.do</to>
     </rule>
 
-    <outbound-rule>
-        <from>^/frontpage.do$</from>
-        <to>/</to>
-    </outbound-rule>
+    <rule>
+        <from>^/createAd$</from>
+        <to>/ad/create.do</to>
+    </rule>
+
 </urlrewrite>
