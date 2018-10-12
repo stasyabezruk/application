@@ -1,0 +1,54 @@
+{
+  "name": "bostadsportal.se",
+  "version": "1.0.0",
+  "description": "Upgrade tool for Babel",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d lib",
+    "start": "npm run build -- -w",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "keywords": [
+    "babel",
+    "babel 7",
+    "babel-upgrade",
+    "codemod"
+  ],
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "core-js": "^2.5.7",
+    "cross-spawn": "^6.0.4",
+    "diff": "^3.5.0",
+    "globby": "^8.0.1",
+    "grunt": "^1.0.3",
+    "has-yarn": "^1.0.0",
+    "json5": "^0.5.1",
+    "pify": "^3.0.0",
+    "read-pkg-up": "^3.0.0",
+    "semver": "^5.5.0",
+    "sort-keys": "^2.0.0",
+    "write": "^1.0.3",
+    "write-json-file": "^2.3.0",
+    "write-pkg": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^10.0.0",
+    "grunt-babel": "^8.0.0",
+    "grunt-browserify": "^5.3.0",
+    "grunt-changed": "^2.0.1",
+    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "jest": "^22.4.0",
+    "load-grunt-tasks": "^4.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupTestFrameworkScriptFile": "<rootDir>/node_modules/@babel/polyfill/dist/polyfill.js"
+  }
+}

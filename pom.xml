@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring.version>4.3.6.RELEASE</spring.version>
+        <spring-security-version>4.0.3.RELEASE</spring-security-version>
         <hibernate.version>5.2.4.Final</hibernate.version>
         <hibernate.validator>5.4.1.Final</hibernate.validator>
         <jstl.version>1.2.1</jstl.version>
@@ -66,6 +67,24 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring-security-version}</version>
         </dependency>
 
         <!-- URL Rewrite -->
@@ -265,6 +284,216 @@
             <properties>
                 <environment>dev</environment>
             </properties>
+        </profile>
+
+
+        <!--TO DO: HAVE TO DO ON DEV ONCE: mvn install -PinstallNode -Plocal/dev, ANOTHER CASES: mvn install -PgruntBuild -Plocal/dev  -->
+        <profile>
+            <id>installNode</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.4</version>
+
+                        <executions>
+                            <execution>
+                                <id>install node and yarn</id>
+                                <goals>
+                                    <goal>install-node-and-yarn</goal>
+                                </goals>
+                                <phase>generate-resources</phase>
+                                <configuration>
+                                    <nodeVersion>v6.9.1</nodeVersion>
+                                    <yarnVersion>v0.21.3</yarnVersion>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>yarn install</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                            </execution>
+
+                            <execution>
+                                <id>grunt-babel install</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add grunt-babel --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install babel-preset-env</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add babel-preset-env --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install core-js</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add core-js</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>load-grunt-tasks</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add load-grunt-tasks --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install grunt-changed</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add grunt-changed --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install grunt-uglify</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add grunt-contrib-uglify --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install grunt-browserify</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add grunt-browserify --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install babelify</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add babelify --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install grunt-contrib-watch</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>add grunt-contrib-watch --dev</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>grunt default</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>default</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>gruntBuild</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>grunt default</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>default</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--mvn install -PgruntWatch -Plocal-->
+
+        <profile>
+            <id>gruntWatch</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>grunt watchChanges</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>watchChanges</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>gruntMin</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>grunt min</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>min</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
