@@ -21,6 +21,6 @@ public class HomeController {
 
         List<Ad> ads = adService.getAds();
         model.addAttribute("ads", ads);
-        return "/home";
+        return "frontpage";
     }
 }
