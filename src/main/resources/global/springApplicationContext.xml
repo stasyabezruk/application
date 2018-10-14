@@ -12,7 +12,7 @@
 		                   http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <bean id="propertyPlaceholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:config.properties" />
+        <property name="location" value="resources/local/config.properties" />
     </bean>
 
     <context:component-scan base-package="com.app">
@@ -41,12 +41,11 @@
         <property name="jpaPropertyMap">
             <map>
                 <entry key="hibernate.dialect" value="com.app.configuration.BPSQLDialect" />
-                <entry key="hibernate.hbm2ddl.auto" value="update" />
-                <entry key="hibernate.format_sql" value="true" />
+                <entry key="hibernate.hbm2ddl.auto" value="${hib.hbm2ddl.auto}" />
 
                 <entry key="hibernate.current_session_context_class" value="org.springframework.orm.hibernate4.SpringSessionContext" />
 
-                <entry key="hibernate.connection.provider_class" value="com.zaxxer.hikari.hibernate.HikariConnectionProvider" />
+                <entry key="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
                 <entry key="hibernate.connection.CharSet" value="utf8mb4" />
                 <entry key="hibernate.connection.characterEncoding" value="utf8mb4" />
                 <entry key="hibernate.connection.useUnicode" value="true" />
@@ -68,8 +67,8 @@
                 <entry key="hibernate.hikari.idleTimeout" value="30000" />
                 <entry key="hibernate.hikari.connectionTimeout" value="34000" />
                 <entry key="hibernate.hikari.connectionInitSql" value="SET NAMES utf8mb4" />
-                <entry key="hibernate.hikari.driverClassName" value="com.mysql.jdbc.Driver" />
-                <entry key="hibernate.hikari.jdbcUrl" value="jdbc:mysql://localhost:3306/application" />
+                <entry key="hibernate.hikari.driverClassName" value="${spring.datasource.driverClassName}" />
+                <entry key="hibernate.hikari.jdbcUrl" value="jdbc:mysql://${db.host}/${db.database}" />
 
                 <!-- ### HIBERNATE CACHE ### -->
                 <entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory"/>
@@ -78,9 +77,9 @@
                 <entry key="hibernate.cache.region_prefix" value=""/>
 
                 <!-- ### HIBERNATE DEBUG ### -->
-                <entry key="hibernate.format_sql" value="false" />
-                <entry key="hibernate.use_sql_comments" value="false" />
-                <entry key="hibernate.show_sql" value="true" />
+                <entry key="hibernate.format_sql" value="${db.sql.formatted}" />
+                <entry key="hibernate.use_sql_comments" value="${db.sql.commented}" />
+                <entry key="hibernate.show_sql" value="${hib.show_sql}" />
                 <entry key="hibernate.generate_statistics" value="true" />
             </map>
         </property>
