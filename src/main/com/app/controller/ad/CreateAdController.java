@@ -3,7 +3,6 @@ package com.app.controller.ad;
 import com.app.dto.CreateEditAdForm;
 import com.app.model.Ad;
 import com.app.service.AdService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

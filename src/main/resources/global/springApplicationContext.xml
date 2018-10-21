@@ -23,6 +23,7 @@
     <mvc:annotation-driven/>
 
     <bean id="jmxConfiguration" class="com.app.configuration.JMXConfiguration" />
+    <bean id="cachingConfig" class="com.app.configuration.CachingConfig" />
 
     <!-- ##### TRANSACTIONS ### -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -71,7 +72,7 @@
                 <entry key="hibernate.hikari.jdbcUrl" value="jdbc:mysql://${db.host}/${db.database}" />
 
                 <!-- ### HIBERNATE CACHE ### -->
-                <entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory"/>
+                <entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
                 <entry key="hibernate.cache.use_query_cache" value="true"/>
                 <entry key="hibernate.cache.use_second_level_cache" value="true"/>
                 <entry key="hibernate.cache.region_prefix" value=""/>
